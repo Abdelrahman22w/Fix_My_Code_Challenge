@@ -5,27 +5,27 @@
 ###
 
 result = []
-
 ARGV.each do |arg|
-  # Check if the argument is a valid integer
-  if arg =~ /^-?\d+$/
+    # skip if not integer
+    next if arg !~ /^-?[0-9]+$/
+
+    # convert to integer
     i_arg = arg.to_i
-
-    if result.empty?
-      result << i_arg
-    else
-      is_inserted = false
-      result.each_with_index do |value, index|
-        if i_arg < value
-          result.insert(index, i_arg)
-          is_inserted = true
-          break
+    
+    # insert result at the right position
+    is_inserted = false
+    i = 0
+    l = result.size
+    while !is_inserted && i < l do
+        if result[i] < i_arg
+            i += 1
+        else
+            result.insert(i - 1, i_arg)
+            is_inserted = true
+            break
         end
-      end
-
-      result << i_arg unless is_inserted
     end
-  end
+    result << i_arg if !is_inserted
 end
 
 puts result
